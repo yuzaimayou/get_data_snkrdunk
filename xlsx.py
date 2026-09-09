@@ -24,8 +24,8 @@ def compare_price(data,size,price):
         print(e)
         return ""
     
-def snkr_check_file():
-    wb=load_workbook('snkrdunk_results.xlsx')
+def snkr_check_file(input_path,output_path, progress_callback=None):
+    wb=load_workbook(input_path)
     sheet=wb[wb.sheetnames[0]]
     maxRow=sheet.max_row
 
@@ -50,8 +50,8 @@ def snkr_check_file():
         note=compare_price(data_list[product_key],size,price)
 
         sheet.cell(row=i,column=5,value=note)
+        if progress_callback:
+            progress_callback(i-1,maxRow-1)
 
 
-    wb.save('data_modified.xlsx')
-
-snkr_check_file()
+    wb.save(output_path)
